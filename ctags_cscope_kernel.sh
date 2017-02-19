@@ -18,16 +18,6 @@ done
 
 echo $remove_arch
 
-ctags_param=""
-for arch in $remove_arch; do
-  #ctags_param="--exclude=${kernel_path}/arch/${arch} ${ctags_param}"
-  ctags_param="--exclude=\"arch/${arch}*\" ${ctags_param}"
-done
-
-#echo $ctags_param
-#ctags -R ${ctags_param}
-
-
 prune_dirs="( -path ./tmp -o -path ./Documentation -o -path ./scripts -o -path ./usr -o -path ./sound -o -path ./tools -o -path ./samples"
 
 for arch in $remove_arch; do
@@ -40,3 +30,5 @@ echo "${prune_dirs}"
 
 find \. ${prune_dirs} -prune -o -name *.[chxsS] -type f -print > cscope.files
 
+ctags -L < cscope.files
+cscope -bqk -i cscope.files
